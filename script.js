@@ -17,7 +17,39 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
     });
 
-    // 加载文章内容
+    // 轮播图功能
+    const carousel = document.querySelector('.carousel');
+    if (carousel) {
+        const items = carousel.querySelectorAll('.carousel-item');
+        const prevBtn = carousel.querySelector('.carousel-prev');
+        const nextBtn = carousel.querySelector('.carousel-next');
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            items.forEach(item => item.classList.remove('active'));
+            items[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % items.length;
+            showSlide(currentIndex);
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            showSlide(currentIndex);
+        }
+
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+        }
+
+        // 自动轮播
+        setInterval(nextSlide, 5000);
+    }
+
+    // 文章加载功能
     async function loadArticle(path) {
         try {
             const response = await fetch(path);
